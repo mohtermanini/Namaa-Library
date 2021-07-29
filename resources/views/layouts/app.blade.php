@@ -69,7 +69,7 @@
                 </ul>
         </div>
     </nav>
-    @yeild("top-content")
+    @yield("top-content")
     <div class="container mt-4">
         @include('includes.errors')
         @yield("content")
