@@ -2,7 +2,7 @@
 
 @section('top-content')
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    This is a demo website, play with it as you like.
+    <p class="text-start mb-0">This is a demo website, play with it as you like</p>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 @stop
