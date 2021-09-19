@@ -24,61 +24,64 @@
     </div>
 </div>
 
-<table class="table table-bordered table-hover text-center mt-3">
-    <thead>
-        <tr>
-           <th colspan="8">{{$title}}</th> 
-        </tr>
-        <tr>
-            <th>اسم المستخدم</th>
-            <th>رقم الموبايل 1</th>
-            <th>رقم الموبايل 2</th>
-            <th>رقم الأرضي</th>
-            <th>بداية الاشتراك</th>
-            <th>لغاية</th>
-            <th>المبلغ المدفوع</th>
-            <th>تفاصيل المشترك</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if($subscriptions->count() > 0)
-            @foreach($subscriptions as $subscription)
+<div class="table-responsive">
+    <table class="table table-bordered table-hover text-center mt-3">
+        <thead>
+            <tr>
+               <th colspan="8">{{$title}}</th> 
+            </tr>
+            <tr>
+                <th>اسم المستخدم</th>
+                <th>رقم الموبايل 1</th>
+                <th>رقم الموبايل 2</th>
+                <th>رقم الأرضي</th>
+                <th>بداية الاشتراك</th>
+                <th>لغاية</th>
+                <th>المبلغ المدفوع</th>
+                <th>تفاصيل المشترك</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if($subscriptions->count() > 0)
+                @foreach($subscriptions as $subscription)
+                    <tr>
+                        <td>{{ $subscription->user->name }}</td>
+                        <td>{{ $subscription->user->mobile_1==null?'لايوجد':$subscription->user->mobile_1 }}
+                        </td>
+                        <td>{{ $subscription->user->mobile_2==null?'لايوجد':$subscription->user->mobile_2 }}
+                        </td>
+                        <td>{{ $subscription->user->phone_num==null?'لايوجد':$subscription->user->phone_num }}
+                        </td>
+                        <td>
+                            {{ $subscription->start_date }}
+                        </td>
+                        <td>
+                            @if($subscription->remainingDuration() > 0)
+                                <p class="text-warning">{{ $subscription->remainingDuration() }} يوم</p>
+                            @else
+                                {{ $subscription->getDate($subscription->end_date) }}
+                            @endif
+                        </td>
+                        <td>
+                            {{ $subscription->fee }}
+                        </td>
+                        <td>
+                            <a href="{{ route('users.show',['user'=>$subscription->user->id]) }}"
+                                class="btn btn-info">تفاصيل</a>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
-                    <td>{{ $subscription->user->name }}</td>
-                    <td>{{ $subscription->user->mobile_1==null?'لايوجد':$subscription->user->mobile_1 }}
-                    </td>
-                    <td>{{ $subscription->user->mobile_2==null?'لايوجد':$subscription->user->mobile_2 }}
-                    </td>
-                    <td>{{ $subscription->user->phone_num==null?'لايوجد':$subscription->user->phone_num }}
-                    </td>
-                    <td>
-                        {{ $subscription->start_date }}
-                    </td>
-                    <td>
-                        @if($subscription->remainingDuration() > 0)
-                            <p class="text-warning">{{ $subscription->remainingDuration() }} يوم</p>
-                        @else
-                            {{ $subscription->getDate($subscription->end_date) }}
-                        @endif
-                    </td>
-                    <td>
-                        {{ $subscription->fee }}
-                    </td>
-                    <td>
-                        <a href="{{ route('users.show',['user'=>$subscription->user->id]) }}"
-                            class="btn btn-info">تفاصيل</a>
+                    <td colspan="8">
+                        <p class="fw-bold">لايوجد مستخدمين في {{ $title }} بعد</p>
                     </td>
                 </tr>
-            @endforeach
-        @else
-            <tr>
-                <td colspan="8">
-                    <p class="fw-bold">لايوجد مستخدمين في {{ $title }} بعد</p>
-                </td>
-            </tr>
-        @endif
-    </tbody>
-</table>
+            @endif
+        </tbody>
+    </table>
+</div>
+
 <div class="d-flex justify-content-center mt-4">
     {{ $subscriptions->links() }}
 </div>
