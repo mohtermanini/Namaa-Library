@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Subscription;
 use App\Http\Traits\Validator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Session;
 use Config;
 
@@ -20,18 +21,30 @@ class UsersController extends Controller
      */
     public function index()
     {
+        $order_col = request()->query("order_col", "name");
+        $order_type = request()->query("order_type", "asc");
+        $next_order_type = $order_type === "asc" ? "desc" : "asc";
         if(request()->user_name_search){
             if(request()->user_id != -1){
-            $users = User::where('id',request()->user_id)
-            ->orderBy('name')->paginate(Config::get('pagination_num'));
+                $users = User::where('id',request()->user_id);
             }else{
-                $users = User::where('name','like','%'.request()->user_name_search.'%')
-                ->orderBy('name')->paginate(Config::get('pagination_num'));
+                $users = User::where('name','like','%'.request()->user_name_search.'%');
             }
-        }else{
-            $users = User::orderBy('name')->paginate(Config::get('pagination_num'));
+            $users = $users->orderBy("name", "asc");
+        } else {
+            $users = User::orderBy("name", "asc");
         }
-        return view('users.index')->with("users",$users)->with("search_url",route('users.search'));
+        $users = $users->paginate(Config::get('pagination_num'))->withQueryString();
+        if ($order_type === "asc") {
+            $sorted_users = $users->sortBy($order_col);
+        } else {
+            $sorted_users = $users->sortByDesc($order_col);
+        }
+        return view('users.index')->with("users",$users)
+            ->with("sorted_users",$sorted_users)
+            ->with("search_url",route('users.search'))
+            ->with("order_col", $order_col)
+            ->with("order_type", $next_order_type);
     }
 
     /**
