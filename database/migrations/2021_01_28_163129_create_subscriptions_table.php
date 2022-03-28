@@ -18,8 +18,12 @@ class CreateSubscriptionsTable extends Migration
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->integer('fee')->unsigned()->default(0);
-            $table->integer('type_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->bigInteger('type_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+
+            $table->foreign('type_id')->references('id')->on('subscription_types');
+            $table->foreign('user_id')->references('id')->on('users');
+
             $table->softDeletes();
             $table->timestamps();
         });

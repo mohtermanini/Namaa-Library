@@ -19,7 +19,10 @@ class CreateBooksTable extends Migration
             $table->string('author');
             $table->integer('count')->unsigned();
             $table->integer('available_count')->unsigned();
-            $table->integer('category_id')->unsigned();
+            $table->bigInteger('category_id')->unsigned();
+
+            $table->foreign('category_id')->references('id')->on('categories');
+
             $table->softDeletes();
             $table->timestamps();
         });

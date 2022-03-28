@@ -15,8 +15,11 @@ class CreateSessionsTable extends Migration
     {
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
-            $table->integer('course_id')->unsigned();
+            $table->bigInteger('course_id')->unsigned();
             $table->date('date');
+
+            $table->foreign('course_id')->references('id')->on('courses');
+
             $table->timestamps();
         });
     }

@@ -15,9 +15,13 @@ class CreateSessionUserTable extends Migration
     {
         Schema::create('session_user', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->unsigned();
-            $table->integer('session_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('session_id')->unsigned();
             $table->integer('paid')->unsigned();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('session_id')->references('id')->on('sessions');
+
             $table->timestamps();
         });
     }

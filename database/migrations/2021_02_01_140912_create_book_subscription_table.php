@@ -15,12 +15,16 @@ class CreateBookSubscriptionTable extends Migration
     {
         Schema::create('book_subscription', function (Blueprint $table) {
             $table->id();
-            $table->integer('subscription_id')->unsigned();
-            $table->integer('book_id')->unsigned();
+            $table->bigInteger('subscription_id')->unsigned();
+            $table->bigInteger('book_id')->unsigned();
             $table->dateTime('borrow_date');
             $table->date('return_date')->nullable();
             $table->string('identity_national_num')->nullable();
             $table->integer('mortgage_amount')->unsigned()->default(0);
+
+            $table->foreign('book_id')->references('id')->on('books');
+            $table->foreign('subscription_id')->references('id')->on('subscriptions');
+
             $table->timestamps();
         });
     }
