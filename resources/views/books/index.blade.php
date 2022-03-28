@@ -44,8 +44,26 @@
 <table class="table table-bordered table-hover text-center mt-3">
     <thead>
         <tr>
-            <th>اسم الكتاب</th>
-            <th>اسم المؤلف</th>
+            <th>
+                <a class="text-decoration-none text-dark" href=" {{ route('books.index',
+                    array_merge(request()->query(), 
+                    ['order_col' => 'title', 'order_type' => $order_col === 'title' ? $order_type : 'asc'])
+                ) }}">
+                    اسم الكتاب
+                    @include("includes.icons.sorting_icon",
+                     ['current_col' => 'title', 'order_type' => $order_col === 'title' ? $order_type : 'asc'])
+                </a>
+            </th>
+            <th>
+                <a class="text-decoration-none text-dark" href=" {{ route('books.index',
+                array_merge(request()->query(), 
+                ['order_col' => 'author', 'order_type' => $order_col === 'author' ? $order_type : 'asc'])
+            ) }}">
+                اسم المؤلف
+                @include("includes.icons.sorting_icon", 
+                ["current_col" => "author", 'order_type' => $order_col === 'author' ? $order_type : 'asc'])
+            </a>
+            </th>
             <th>عدد النسخ الكلية</th>
             <th>عدد النسخ المتوفرة</th>
             <th>اسم الصنف</th>
@@ -54,8 +72,8 @@
         </tr>
     </thead>
     <tbody>
-        @if($books->count() > 0)
-            @foreach($books as $book)
+        @if($sorted_books->count() > 0)
+            @foreach($sorted_books as $book)
                 <tr>
                     <td>{{ $book->title }}</td>
                     <td>{{ $book->author }}</td>

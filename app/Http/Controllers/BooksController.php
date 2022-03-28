@@ -21,27 +21,34 @@ class BooksController extends Controller
         if(request()->book_name_search){
             if(request()->book_id != -1){
             $books = Book::where('id',request()->book_id)
-            ->orderBy('title')->paginate(Config::get('pagination_num'));
+            ->orderBy('title');
             }else{
                 $books = Book::where('title','like','%'.request()->book_name_search.'%')
-                ->orderBy('title')->paginate(Config::get('pagination_num'));
+                ->orderBy('title');
             }
         }
         elseif(request()->author_name_search){
             if(request()->author != -1){
                 $books = Book::where('author',request()->author)
-                ->orderBy('author')->paginate(Config::get('pagination_num'));
+                ->orderBy('author');
             }else{
                 $books = Book::where('author','like','%'.request()->author_name_search.'%')
-                ->orderBy('author')->paginate(Config::get('pagination_num'));
+                ->orderBy('author');
             }
         }else{
-            $books = Book::with('category')->orderBy('title')
-                            ->paginate(Config::get('pagination_num'));
+            $books = Book::with('category')->orderBy('title');
         }
+        $books = $books->paginate(Config::get('pagination_num'))->withQueryString();
+        $order_col = request()->query("order_col", "title");
+        $order_type = request()->query("order_type", "asc");
+        $sorted_books = $order_type === "asc" ? $books->sortBy($order_col) : $books->sortByDesc($order_col);
+        $next_order_type = $order_type === "asc" ? "desc": "asc";
         return view('books.index')->with("books",$books)
+                                ->with("sorted_books",$sorted_books)
                                 ->with("search_url",route('books.search'))
-                                ->with("author_search_url",route('author.books.search'));
+                                ->with("author_search_url",route('author.books.search'))
+                                ->with("order_col", $order_col)
+                                ->with("order_type", $next_order_type);
     }
     
     /**
