@@ -141,6 +141,7 @@ Route::get('developer/contact', function(){
 Route::get('/', function () {
     return redirect()->route('statistics');
 });
+
 /*
 Route::get('dbbackup',function(){
     try{
@@ -160,6 +161,3 @@ Route::get('dbbackup',function(){
 })->name('dbbackup');
 
 */
-Route::get('test',function(){
-    return PHP_INT_MAX;
-});
