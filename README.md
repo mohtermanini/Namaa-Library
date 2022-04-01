@@ -17,6 +17,16 @@ A control panel for library management inside of Namaa charitable organization.
 * Library activities management
 * Library courses management
 
+## Technical section
+* Langauages:
+    * PHP
+    * Laravel framework
+    * MySQL
+    * HTML
+    * Bootstrap v5
+    * Javascript 
+    * JQuery
+
 ## Developers
 * Mohamad Termanini
     * mohtermanini.job@gmail.com
