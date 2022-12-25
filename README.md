@@ -1,7 +1,7 @@
 # Namaa Library
 A control panel for library management inside of Namaa charitable organization.
 
-**You can enter the demo website from [here](http://namaa-library.herokuapp.com).**
+**You can enter the demo website from [here](https://namaalibrary.000webhostapp.com).**
 
 ## Features
 * Register users in the system
